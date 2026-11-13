@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UIL FP VVF Forlì-Cesena – Invio PEC</title>
+<link rel="icon" href="img/icon-256.png">
+<link rel="apple-touch-icon" href="img/icon-256.png">
+<meta name="theme-color" content="#002060">
+<style>
+  :root{
+    --navy:#002060; --navy-2:#1f3a7a; --red:#c8102e; --sky:#8fc3ea;
+    --ink:#1b2233; --muted:#5d6678; --line:#d9dfea; --bg:#f4f6fa; --card:#fff;
+    --ok:#1f7a3a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:Calibri,Carlito,"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:16px;line-height:1.45}
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+
+  /* Intestazione in stile carta intestata */
+  header.letterhead{background:#fff;border-bottom:1px solid var(--line)}
+  .lh{display:flex;align-items:center;gap:18px;padding:18px 0 14px}
+  .lh img{width:118px;height:auto;flex:none}
+  .lh h1{margin:0;font-size:1.32rem;font-weight:400;font-style:italic;color:var(--navy);letter-spacing:.2px}
+  .lh h1 b{font-size:1.18em;font-weight:700}
+  .lh .sub{margin:2px 0 0;font-style:italic;color:var(--navy)}
+  .lh .rule{width:74px;height:2px;background:var(--navy);margin:8px 0 6px}
+  .lh .contacts{font-size:.8rem;color:var(--muted)}
+  .lh .contacts a{color:var(--muted);text-decoration:none}
+  .bar{height:3px;background:linear-gradient(90deg,#2e8b3d 0 33%,#fff 33% 66%,var(--red) 66%)}
+
+  main{padding:20px 0 8px}
+  h2{color:var(--navy);font-size:1.15rem;margin:0 0 4px}
+  .lead{color:var(--muted);margin:0 0 16px;font-size:.95rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px}
+  .card h3{margin:0 0 12px;font-size:1rem;color:var(--navy);text-transform:uppercase;letter-spacing:.6px}
+  .step{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:.8rem;margin-right:6px;vertical-align:1px}
+
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+  .c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c8{grid-column:span 8}.c12{grid-column:span 12}
+  @media (max-width:640px){.c3,.c4,.c5,.c8{grid-column:span 12}.lh img{width:84px}.lh h1{font-size:1.08rem}}
+  label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:4px;font-weight:700}
+  input[type=text],input[type=date],input[type=number],input[type=email],textarea{
+    width:100%;font:inherit;color:var(--ink);background:#fff;border:1px solid #c5cddb;border-radius:8px;padding:9px 10px}
+  textarea{resize:vertical;min-height:72px}
+  input:focus,textarea:focus{outline:2px solid var(--sky);border-color:var(--navy-2)}
+  .hint{font-size:.78rem;color:var(--muted);margin-top:4px}
+
+  .rcpt{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+  .rcpt:last-child{border-bottom:0}
+  .rcpt input{margin-top:4px;width:18px;height:18px;accent-color:var(--navy)}
+  .rcpt .who{font-weight:700;color:var(--navy)}
+  .rcpt .addr{font-size:.85rem;color:var(--muted);word-break:break-all}
+  .tag{font-size:.7rem;font-weight:700;padding:1px 6px;border-radius:9px;margin-left:6px;vertical-align:1px}
+  .tag.to{background:var(--navy);color:#fff}.tag.cc{background:#e5ebf6;color:var(--navy)}
+  .tag.pec{background:#e7f4ea;color:var(--ok)}.tag.nopec{background:#fdecee;color:var(--red)}
+  .rcpt .x{margin-left:auto;background:none;border:0;color:var(--red);font-size:1.2rem;cursor:pointer}
+  .addrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .addrow input{flex:1 1 200px}
+  .seg{display:flex;border:1px solid #c5cddb;border-radius:8px;overflow:hidden}
+  .seg button{border:0;background:#fff;padding:8px 12px;font:inherit;cursor:pointer;color:var(--navy)}
+  .seg button.on{background:var(--navy);color:#fff}
+
+  .out{display:grid;grid-template-columns:72px 1fr auto;gap:8px 10px;align-items:start}
+  .out .k{font-weight:700;color:var(--navy);padding-top:9px;font-size:.9rem}
+  .out .v{background:#f8fafd;border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:.92rem;white-space:pre-wrap;word-break:break-word;min-height:40px}
+  .out textarea.v{min-height:180px;font-family:inherit}
+  @media (max-width:640px){.out{grid-template-columns:1fr auto}.out .k{grid-column:1 / -1;padding:0}}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--navy);background:#fff;color:var(--navy);
+       font:inherit;font-weight:700;border-radius:8px;padding:9px 14px;cursor:pointer;text-decoration:none;white-space:nowrap}
+  .btn:hover{background:#eef2fa}
+  .btn.primary{background:var(--navy);color:#fff}.btn.primary:hover{background:var(--navy-2)}
+  .btn.red{border-color:var(--red);color:var(--red)}
+  .btn.sm{padding:7px 10px;font-size:.85rem}
+  .btn.done{border-color:var(--ok);color:var(--ok)}
+  .actions{display:flex;flex-wrap:wrap;gap:10px}
+  .actions .btn{flex:1 1 220px;padding:13px 14px}
+
+  ol.howto{margin:0;padding-left:20px;color:var(--muted);font-size:.9rem}
+  ol.howto li{margin:3px 0}
+
+  footer{text-align:center;padding:10px 0 28px;color:var(--muted);font-size:.8rem}
+  footer img{width:260px;max-width:70%;height:auto;display:block;margin:0 auto 8px}
+  .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(30px);opacity:0;background:var(--navy);color:#fff;
+         padding:9px 16px;border-radius:20px;font-size:.9rem;transition:.2s;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%)}
+</style>
+</head>
+<body>
+
+<header class="letterhead">
+  <div class="wrap lh">
+    <img src="img/logo-uilfp.png" alt="UIL FP Vigili del Fuoco">
+    <div>
+      <h1><b>U</b>nione <b>I</b>taliana <b>L</b>avoratori <b>F</b>unzione <b>P</b>ubblica</h1>
+      <p class="sub">Segreteria Provinciale Vigili del Fuoco Forlì-Cesena</p>
+      <div class="rule"></div>
+      <div class="contacts">Via Farini n. 62 – 00184 Roma · <a href="https://www.uilpavvf.com" target="_blank" rel="noopener">www.uilpavvf.com</a></div>
+    </div>
+  </div>
+  <div class="bar"></div>
+</header>
+
+<main class="wrap">
+  <h2>Invio nota via PEC</h2>
+  <p class="lead">Compila i dati della nota: oggetto, testo e destinatari della PEC si preparano da soli. Poi copia i campi nella PEC Aruba e allega il PDF firmato.</p>
+
+  <section class="card">
+    <h3><span class="step">1</span>Dati della nota</h3>
+    <div class="grid">
+      <div class="c4"><label for="data">Data</label><input type="date" id="data"></div>
+      <div class="c3"><label for="prot">Protocollo n.</label><input type="number" id="prot" min="1" inputmode="numeric" placeholder="es. 13">
+        <div class="hint" id="protHint"></div></div>
+      <div class="c5"><label for="breve">Titolo breve (nome file)</label><input type="text" id="breve" placeholder="es. ODG819 Autorimessa"></div>
+      <div class="c12"><label for="oggetto">Oggetto della nota</label>
+        <textarea id="oggetto" rows="3" placeholder="es. Ordine del Giorno prot. ODG.0000819 del 13/11/2026 &quot;…&quot;. Mancata informazione preventiva alle OO.SS."></textarea></div>
+      <div class="c12"><label>Destinatario principale (per il saluto)</label>
+        <div class="seg" id="saluto">
+          <button type="button" data-v="cmd" class="on">Comandante</button>
+          <button type="button" data-v="dir">Direttore Regionale</button>
+          <button type="button" data-v="none">Generico</button>
+        </div></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3><span class="step">2</span>Destinatari</h3>
+    <div id="rcpts"></div>
+    <div class="addrow">
+      <input type="email" id="newAddr" placeholder="Aggiungi indirizzo (es. ufficio@cert.vigilfuoco.it)">
+      <input type="text" id="newName" placeholder="Descrizione (facoltativa)">
+      <button class="btn sm" type="button" id="addCc">+ Cc</button>
+    </div>
+    <div class="hint">Gli indirizzi non PEC ricevono la mail, ma senza ricevuta di consegna.</div>
+  </section>
+
+  <section class="card">
+    <h3><span class="step">3</span>PEC pronta</h3>
+    <div class="out">
+      <div class="k">A</div><div class="v" id="oTo"></div><button class="btn sm" data-copy="oTo">Copia</button>
+      <div class="k">Cc</div><div class="v" id="oCc"></div><button class="btn sm" data-copy="oCc">Copia</button>
+      <div class="k">Oggetto</div><div class="v" id="oSubj"></div><button class="btn sm" data-copy="oSubj">Copia</button>
+      <div class="k">Testo</div><textarea class="v" id="oBody" spellcheck="true"></textarea>
+      <div style="display:flex;flex-direction:column;gap:6px"><button class="btn sm" data-copy="oBody">Copia</button><button class="btn sm red" type="button" id="regen" title="Rigenera il testo dai dati">↺</button></div>
+      <div class="k">File</div><div class="v" id="oFile"></div><button class="btn sm" data-copy="oFile">Copia</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3><span class="step">4</span>Invia</h3>
+    <div class="actions">
+      <a class="btn primary" id="mailto" href="#">✉️ Apri bozza nell'app di posta</a>
+      <a class="btn" href="https://webmail.pec.it/" target="_blank" rel="noopener">🔐 Apri Webmail Aruba PEC</a>
+    </div>
+    <ol class="howto" style="margin-top:12px">
+      <li><b>Dallo smartphone:</b> “Apri bozza” e scegli l'app Aruba PEC, se compare tra le opzioni.</li>
+      <li>Altrimenti apri la Webmail (o l'app), crea un nuovo messaggio e incolla A, Cc, Oggetto e Testo con i pulsanti <i>Copia</i>.</li>
+      <li>Allega il PDF firmato digitalmente, controlla e invia.</li>
+    </ol>
+  </section>
+</main>
+
+<footer>
+  <img src="img/obiettivo-salute.jpg" alt="Obiettivo Salute">
+  FP Vigili del Fuoco rappresentativa della UIL PA Vigili del Fuoco · Forlì-Cesena
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var LS = "uilfp-fc-pec-v1";
+  var store = { get:function(){ try{ return JSON.parse(localStorage.getItem(LS)) || {}; }catch(e){ return {}; } },
+                set:function(o){ try{ localStorage.setItem(LS, JSON.stringify(o)); }catch(e){} } };
+
+  var DEFAULT_RCPTS = [
+    { role:"to", name:"Comando VV.F. Forlì-Cesena", addr:"com.forli@cert.vigilfuoco.it", on:true, fixed:true },
+    { role:"cc", name:"Direzione Regionale VV.F. Emilia-Romagna", addr:"dir.emiliaromagna@cert.vigilfuoco.it", on:true, fixed:true },
+    { role:"cc", name:"Segreteria Provinciale UIL FP Forlì-Cesena", addr:"uilfplcesena@pec.it", on:true, fixed:true },
+    { role:"cc", name:"UIL FPL Emilia-Romagna", addr:"emiliaromagna@uilfpl.it", on:true, fixed:true },
+    { role:"cc", name:"Segreteria Regionale UIL FP VVF Emilia-Romagna", addr:"vigilidelfuoco.emiliaromagna@uilfpvvf.it", on:true, fixed:true }
+  ];
+  var EPC_LABELS = {
+    "dir.emiliaromagna@cert.vigilfuoco.it":"Direzione Regionale Vigili del Fuoco Emilia-Romagna",
+    "uilfplcesena@pec.it":"Segreteria Provinciale UIL FP Forlì-Cesena",
+    "vigilidelfuoco.emiliaromagna@uilfpvvf.it":"Segreteria Regionale UIL FP VVF Emilia-Romagna"
+  };
+
+  var saved = store.get();
+  var rcpts = DEFAULT_RCPTS.map(function(r){ var c = Object.assign({}, r);
+    if (saved.off && saved.off.indexOf(r.addr) >= 0) c.on = false; return c; });
+  (saved.extra || []).forEach(function(r){ rcpts.push({ role:"cc", name:r.name, addr:r.addr, on:true, fixed:false }); });
+
+  var saluto = "cmd", bodyDirty = false;
+  var isPec = function(a){ return /(@cert\.|@pec\.|\.pec\.|@legalmail\.|@postacert\.)/i.test(a) || /@pec\.it$/i.test(a); };
+
+  // --- defaults
+  var today = new Date(); var pad = function(n,w){ n=String(n); while(n.length<w) n="0"+n; return n; };
+  $("data").value = today.getFullYear()+"-"+pad(today.getMonth()+1,2)+"-"+pad(today.getDate(),2);
+  if (saved.lastProt && saved.lastYear === today.getFullYear()) {
+    $("prot").value = saved.lastProt + 1;
+    $("protHint").textContent = "Ultimo usato: " + pad(saved.lastProt,4) + "/" + saved.lastYear;
+  }
+
+  function fmtDate(iso, sep){ if(!iso) return ""; var p = iso.split("-"); return p[2]+sep+p[1]+sep+p[0]; }
+  function year(){ return ($("data").value || "").slice(0,4) || String(today.getFullYear()); }
+  function protStr(){ var n = parseInt($("prot").value,10); return n>0 ? pad(n,4) : "____"; }
+
+  function renderRcpts(){
+    var box = $("rcpts"); box.innerHTML = "";
+    rcpts.forEach(function(r, i){
+      var row = document.createElement("div"); row.className = "rcpt";
+      var cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = r.on;
+      cb.addEventListener("change", function(){ r.on = cb.checked; persist(); update(); });
+      var txt = document.createElement("div");
+      txt.innerHTML = '<span class="who"></span><span class="tag '+(r.role==="to"?"to":"cc")+'">'+(r.role==="to"?"A":"Cc")+'</span>'
+        + '<span class="tag '+(isPec(r.addr)?"pec":"nopec")+'">'+(isPec(r.addr)?"PEC":"non PEC")+'</span><div class="addr"></div>';
+      txt.querySelector(".who").textContent = r.name || r.addr;
+      txt.querySelector(".addr").textContent = r.addr;
+      row.appendChild(cb); row.appendChild(txt);
+      if (!r.fixed) { var x = document.createElement("button"); x.className = "x"; x.title = "Rimuovi"; x.textContent = "×";
+        x.addEventListener("click", function(){ rcpts.splice(i,1); persist(); renderRcpts(); update(); }); row.appendChild(x); }
+      box.appendChild(row);
+    });
+  }
+  function persist(){
+    var s = store.get();
+    s.off = rcpts.filter(function(r){ return r.fixed && !r.on; }).map(function(r){ return r.addr; });
+    s.extra = rcpts.filter(function(r){ return !r.fixed; }).map(function(r){ return { name:r.name, addr:r.addr }; });
+    store.set(s);
+  }
+
+  function buildBody(){
+    var ogg = $("oggetto").value.trim().replace(/\s+/g," ");
+    var head = saluto === "cmd" ? "Alla c.a. del Comandante Provinciale dei Vigili del Fuoco di Forlì-Cesena\nIng. Michelangelo Borino\n"
+             : saluto === "dir" ? "Alla c.a. del Direttore Regionale dei Vigili del Fuoco Emilia-Romagna\n" : "";
+    var epc = rcpts.filter(function(r){ return r.on && r.role==="cc" && EPC_LABELS[r.addr]; }).map(function(r){ return EPC_LABELS[r.addr]; });
+    var s = head;
+    if (epc.length) s += (head ? "\n" : "") + "e p.c. " + epc.join("\n       ") + "\n";
+    s += (s ? "\n" : "") + "Si trasmette in allegato la nota prot. " + protStr() + "/" + year() + " del " + fmtDate($("data").value, ".")
+       + " della UIL FP Vigili del Fuoco Forlì-Cesena" + (ogg ? " avente ad oggetto: " + ogg : ".") + "\n\nDistinti saluti.\n\nUIL FP Vigili del Fuoco Forlì-Cesena\nAndrea Pelizza\n";
+    return s;
+  }
+
+  function update(){
+    var to = rcpts.filter(function(r){ return r.on && r.role==="to"; }).map(function(r){ return r.addr; });
+    var cc = rcpts.filter(function(r){ return r.on && r.role==="cc"; }).map(function(r){ return r.addr; });
+    var ogg = $("oggetto").value.trim().replace(/\s+/g," ");
+    var subj = "Prot. " + protStr() + "/" + year() + (ogg ? " – " + ogg : "");
+    $("oTo").textContent = to.join(", ");
+    $("oCc").textContent = cc.join(", ");
+    $("oSubj").textContent = subj;
+    if (!bodyDirty) $("oBody").value = buildBody();
+    var d = ($("data").value || "").replace(/-/g,"");
+    $("oFile").textContent = d + "_" + protStr() + " " + ($("breve").value.trim() || "Oggetto") + ".pdf";
+    var q = encodeURIComponent;
+    $("mailto").href = "mailto:" + to.join(",") + "?" + (cc.length ? "cc=" + cc.join(",") + "&" : "")
+      + "subject=" + q(subj) + "&body=" + q($("oBody").value.replace(/\r?\n/g, "\r\n"));
+  }
+
+  ["data","prot","breve","oggetto"].forEach(function(id){ $(id).addEventListener("input", update); });
+  $("oBody").addEventListener("input", function(){ bodyDirty = true; update(); });
+  $("regen").addEventListener("click", function(){ bodyDirty = false; update(); toast("Testo rigenerato"); });
+  Array.prototype.forEach.call(document.querySelectorAll("#saluto button"), function(b){
+    b.addEventListener("click", function(){
+      Array.prototype.forEach.call(document.querySelectorAll("#saluto button"), function(x){ x.classList.remove("on"); });
+      b.classList.add("on"); saluto = b.getAttribute("data-v"); bodyDirty = false; update();
+    });
+  });
+  $("addCc").addEventListener("click", function(){
+    var a = $("newAddr").value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a)) { toast("Indirizzo non valido"); return; }
+    rcpts.push({ role:"cc", name:$("newName").value.trim() || a, addr:a, on:true, fixed:false });
+    $("newAddr").value = ""; $("newName").value = ""; persist(); renderRcpts(); update();
+  });
+
+  function toast(msg){ var t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(function(){ t.classList.remove("show"); }, 1400); }
+  function copyText(text){
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+    return new Promise(function(res, rej){
+      var ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy") ? res() : rej(); } catch(e){ rej(e); } finally { document.body.removeChild(ta); }
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("[data-copy]"), function(b){
+    b.addEventListener("click", function(){
+      var el = $(b.getAttribute("data-copy")); var v = el.value !== undefined && el.tagName === "TEXTAREA" ? el.value : el.textContent;
+      copyText(v).then(function(){ b.classList.add("done"); b.textContent = "Copiato ✓"; toast("Copiato");
+        setTimeout(function(){ b.classList.remove("done"); b.textContent = "Copia"; }, 1500); }, function(){ toast("Copia non riuscita"); });
+    });
+  });
+  // ricorda l'ultimo protocollo quando si usa la bozza o la webmail
+  function rememberProt(){ var n = parseInt($("prot").value,10); if (n>0){ var s = store.get(); s.lastProt = n; s.lastYear = parseInt(year(),10); store.set(s);
+      $("protHint").textContent = "Ultimo usato: " + pad(n,4) + "/" + year(); } }
+  Array.prototype.forEach.call(document.querySelectorAll(".actions a"), function(a){ a.addEventListener("click", rememberProt); });
+
+  renderRcpts(); update();
+})();
+</script>
+</body>
+</html>
